@@ -1,7 +1,9 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Duke {
-
+    private static List<String> list = new ArrayList<>();
 
     private static void printIndent(String line) {
         System.out.println("    " + line);
@@ -21,9 +23,16 @@ public class Duke {
                 printIndent("Bye. Hope to see you again soon!");
                 printUnderline();
                 return;
+            } else if (input.equals("list")) {
+                int counter = 1;
+                for (String x : list) {
+                    printIndent(counter + ". " + x);
+                    counter++;
+                }
             } else {
                 printUnderline();
-                printIndent(input);
+                printIndent("Added: " + input);
+                list.add(input);
                 printUnderline();
             }
         }

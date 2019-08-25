@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Duke {
-    private static List<String> list = new ArrayList<>();
+    private static List<Task> list = new ArrayList<>();
 
     private static void printIndent(String line) {
         System.out.println("    " + line);
@@ -17,6 +17,7 @@ public class Duke {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
+            String[] words = input.split(" ");
 
             if (input.equals("bye")) {
                 printUnderline();
@@ -25,14 +26,21 @@ public class Duke {
                 return;
             } else if (input.equals("list")) {
                 int counter = 1;
-                for (String x : list) {
+                for (Task x : list) {
                     printIndent(counter + ". " + x);
                     counter++;
                 }
+            } else if (words[0].equals("done")) {
+                int index = Integer.parseInt(words[1]) - 1;
+                list.get(index).markAsDone();
+                printUnderline();
+                printIndent("Nice! I've marked this task as done:");
+                printIndent("   " + list.get(index).toString());
+                printUnderline();
             } else {
                 printUnderline();
                 printIndent("Added: " + input);
-                list.add(input);
+                list.add(new Task(input));
                 printUnderline();
             }
         }

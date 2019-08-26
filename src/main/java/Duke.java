@@ -22,22 +22,26 @@ public class Duke {
         printUnderline();
     }
 
-    private static void action(String actionType, String description) {
-        switch(actionType) {
-            case "todo":
-                list.add(new Todo(description));
-                addTask(list.get(list.size()-1));
-                break;
-            case "deadline":
-                List<String> content = Arrays.asList(description.split(" /by "));
-                list.add(new Deadline(content.get(0), content.get(1)));
-                addTask(list.get(list.size()-1));
-                break;
-            case "event":
-                content = Arrays.asList(description.split(" /at "));
-                list.add(new Event(content.get(0), content.get(1)));
-                addTask(list.get(list.size()-1));
-                break;
+    private static void handleCommand(String actionType, String description) throws DukeException {
+        if (actionType.equals("todo")) {
+            list.add(new Todo(description));
+            addTask(list.get(list.size() - 1));
+        } else if (actionType.equals("deadline")) {
+            List<String> content = Arrays.asList(description.split(" /by "));
+            if (content.size() == 1) {
+                throw new DukeException("Please supply a date");
+            }
+            list.add(new Deadline(content.get(0), content.get(1)));
+            addTask(list.get(list.size() - 1));
+        } else if (actionType.equals("event")) {
+            List<String> content = Arrays.asList(description.split(" /at "));
+            if (content.size() == 1) {
+                throw new DukeException("Please supply a date");
+            }
+            list.add(new Event(content.get(0), content.get(1)));
+            addTask(list.get(list.size() - 1));
+        } else {
+            throw new DukeException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
     }
 
@@ -62,14 +66,35 @@ public class Duke {
                 }
                 printUnderline();
             } else if (words.get(0).equals("done")) {
-                int index = Integer.parseInt(words.get(1)) - 1;
-                list.get(index).markAsDone();
-                printUnderline();
-                printIndent("Nice! I've marked this task as done:");
-                printIndent("   " + list.get(index).toString());
-                printUnderline();
+                try {
+                    int index = Integer.parseInt(words.get(1)) - 1;
+                    list.get(index).markAsDone();
+                    printUnderline();
+                    printIndent("Nice! I've marked this task as done:");
+                    printIndent("   " + list.get(index).toString());
+                    printUnderline();
+                } catch (IndexOutOfBoundsException e) {
+                    printUnderline();
+                    printIndent("The number is invalid :((");
+                    printUnderline();
+                }
             } else {
-                action(words.get(0), input.substring(input.indexOf(" ")+1));
+                try {
+                    String actionType = words.get(0);
+                    String description = input.substring(input.indexOf(" ") + 1);
+
+                    if (description.equals(input)) {
+                        if (description.equals("todo") || description.equals("deadline") || description.equals("event") )
+                        throw new DukeException("☹ OOPS!!! The description cannot be empty.");
+                    }
+
+                    handleCommand(actionType, description);
+
+                } catch (DukeException e) {
+                    printUnderline();
+                    printIndent(e.getMessage());
+                    printUnderline();
+                }
             }
         }
     }

@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Arrays;
 
 public class Duke {
-    private static List<Task> list = new ArrayList<>();
+    private static List<Task> tasks = new ArrayList<>();
+    private static Storage data = new Storage("data.txt");
 
     private static void printIndent(String line) {
         System.out.println("    " + line);
@@ -18,28 +19,28 @@ public class Duke {
         printUnderline();
         printIndent("Got it. I've added this task:");
         printIndent("   " + task);
-        printIndent("Now you have " + list.size() + (list.size() == 1 ? " task " : " tasks ") + "in the list.");
+        printIndent("Now you have " + tasks.size() + (tasks.size() == 1 ? " task " : " tasks ") + "in the list.");
         printUnderline();
     }
 
     private static void handleCommand(String actionType, String description) throws DukeException {
         if (actionType.equals("todo")) {
-            list.add(new Todo(description));
-            addTask(list.get(list.size() - 1));
+            tasks.add(new Todo(description));
+            addTask(tasks.get(tasks.size() - 1));
         } else if (actionType.equals("deadline")) {
             List<String> content = Arrays.asList(description.split(" /by "));
             if (content.size() == 1) {
                 throw new DukeException("Please supply a date");
             }
-            list.add(new Deadline(content.get(0), content.get(1)));
-            addTask(list.get(list.size() - 1));
+            tasks.add(new Deadline(content.get(0), content.get(1)));
+            addTask(tasks.get(tasks.size() - 1));
         } else if (actionType.equals("event")) {
             List<String> content = Arrays.asList(description.split(" /at "));
             if (content.size() == 1) {
                 throw new DukeException("Please supply a date");
             }
-            list.add(new Event(content.get(0), content.get(1)));
-            addTask(list.get(list.size() - 1));
+            tasks.add(new Event(content.get(0), content.get(1)));
+            addTask(tasks.get(tasks.size() - 1));
         } else {
             throw new DukeException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
@@ -47,6 +48,8 @@ public class Duke {
 
     private static void startDuke() {
         Scanner scanner = new Scanner(System.in);
+        tasks = data.load();
+
         while (true) {
             String input = scanner.nextLine();
             List<String> words = Arrays.asList(input.split(" "));
@@ -60,7 +63,7 @@ public class Duke {
                 int counter = 1;
                 printUnderline();
                 printIndent("Here are the tasks in your list:");
-                for (Task x : list) {
+                for (Task x : tasks) {
                     printIndent(counter + ". " + x);
                     counter++;
                 }
@@ -68,10 +71,10 @@ public class Duke {
             } else if (words.get(0).equals("done")) {
                 try {
                     int index = Integer.parseInt(words.get(1)) - 1;
-                    list.get(index).markAsDone();
+                    tasks.get(index).markAsDone();
                     printUnderline();
                     printIndent("Nice! I've marked this task as done:");
-                    printIndent("   " + list.get(index).toString());
+                    printIndent("   " + tasks.get(index).toString());
                     printUnderline();
                 } catch (IndexOutOfBoundsException e) {
                     printUnderline();
@@ -96,6 +99,8 @@ public class Duke {
                     printUnderline();
                 }
             }
+
+            data.save(tasks);
         }
     }
 

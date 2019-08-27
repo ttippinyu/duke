@@ -1,4 +1,6 @@
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
     private String description;
     private boolean isDone;
 
@@ -13,5 +15,9 @@ public class Task {
 
     public String toString() {
         return "[" + (this.isDone ? "\u2713" : "\u2718") + "] " + this.description;
+    }
+
+    public String saveFormat() {
+        return (this.isDone ? "1" : "0") + "|" + this.description;
     }
 }

@@ -1,7 +1,4 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
+import java.util.*;
 
 public class Duke {
     private static List<Task> tasks = new ArrayList<>();
@@ -29,16 +26,21 @@ public class Duke {
             addTask(tasks.get(tasks.size() - 1));
         } else if (actionType.equals("deadline")) {
             List<String> content = Arrays.asList(description.split(" /by "));
+
             if (content.size() == 1) {
-                throw new DukeException("Please supply a date");
+                System.out.println(content.get(0));
+                throw new DukeException("Please supply a description or date");
             }
+
             tasks.add(new Deadline(content.get(0), content.get(1)));
             addTask(tasks.get(tasks.size() - 1));
         } else if (actionType.equals("event")) {
             List<String> content = Arrays.asList(description.split(" /at "));
+
             if (content.size() == 1) {
-                throw new DukeException("Please supply a date");
+                throw new DukeException("Please supply a description or date");
             }
+
             tasks.add(new Event(content.get(0), content.get(1)));
             addTask(tasks.get(tasks.size() - 1));
         } else {
@@ -48,17 +50,27 @@ public class Duke {
 
     private static void startDuke() {
         Scanner scanner = new Scanner(System.in);
-        tasks = data.load();
+
+        try {
+            tasks = data.load();
+        } catch (DukeException e) {
+            printUnderline();
+            printIndent(e.getMessage());
+            printUnderline();
+        }
 
         while (true) {
             String input = scanner.nextLine();
             List<String> words = Arrays.asList(input.split(" "));
 
+            // bye
             if (input.equals("bye")) {
                 printUnderline();
                 printIndent("Bye. Hope to see you again soon!");
                 printUnderline();
                 return;
+
+            // list
             } else if (input.equals("list")) {
                 int counter = 1;
                 printUnderline();
@@ -68,6 +80,8 @@ public class Duke {
                     counter++;
                 }
                 printUnderline();
+
+            // done
             } else if (words.get(0).equals("done")) {
                 try {
                     int index = Integer.parseInt(words.get(1)) - 1;
@@ -78,14 +92,17 @@ public class Duke {
                     printUnderline();
                 } catch (IndexOutOfBoundsException e) {
                     printUnderline();
-                    printIndent("The number is invalid :((");
+                    printIndent("The task number is invalid :((");
                     printUnderline();
                 }
+
+            // actions
             } else {
                 try {
                     String actionType = words.get(0);
                     String description = input.substring(input.indexOf(" ") + 1);
 
+                    // if no description
                     if (description.equals(input)) {
                         if (description.equals("todo") || description.equals("deadline") || description.equals("event") )
                         throw new DukeException("☹ OOPS!!! The description cannot be empty.");
@@ -109,6 +126,7 @@ public class Duke {
         printIndent("Hello! I'm Duke");
         printIndent("What can I do for you?");
         printUnderline();
+
         startDuke();
     }
 

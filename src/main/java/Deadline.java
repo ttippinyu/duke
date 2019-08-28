@@ -1,18 +1,20 @@
-public class Deadline extends Task {
-    String date;
+import java.util.Date;
 
-    public Deadline(String description, String inputDate) {
+public class Deadline extends Task {
+    private DateTime date;
+
+    public Deadline(String description, String inputDate) throws DukeException {
         super(description);
-        date = inputDate;
+        date = new DateTime(inputDate);
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + this.date + ")";
+        return "[D]" + super.toString() + " (by: " + this.date.toString() + ")";
     }
 
     @Override
     public String saveFormat() {
-        return "D|" + super.saveFormat() + "|" + this.date;
+        return "D|" + super.saveFormat() + "|" + this.date.toString();
     }
 }

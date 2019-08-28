@@ -10,7 +10,7 @@ public class Storage {
         this.filename = filename;
     }
 
-    public List<Task> load() {
+    public List<Task> load() throws DukeException {
         try {
             BufferedReader inStream = new BufferedReader(new FileReader(this.filename));
             List<Task> tasks = new ArrayList<>();

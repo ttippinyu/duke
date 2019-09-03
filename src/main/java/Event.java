@@ -8,9 +8,12 @@ public class Event extends Task {
     public Event(String description, String inputDate) throws DukeException {
         super(description);
         List<String> dates = Arrays.asList(inputDate.split(" to "));
-
-        start = new DateTime(dates.get(0));
-        end = new DateTime(dates.get(1));
+        try {
+            start = new DateTime(dates.get(0));
+            end = new DateTime(dates.get(1));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new DukeException("Invalid date format: dd/mm/yy hh:mm to dd/mm/yy hh:mm");
+        }
     }
 
     @Override

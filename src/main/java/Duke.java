@@ -28,7 +28,6 @@ public class Duke {
             List<String> content = Arrays.asList(description.split(" /by "));
 
             if (content.size() == 1) {
-                System.out.println(content.get(0));
                 throw new DukeException("Please supply a description or date");
             }
 
@@ -100,15 +99,19 @@ public class Duke {
             } else if (words.get(0).equals("delete")) {
                 try {
                     int index = Integer.parseInt(words.get(1)) - 1;
+                    Task removed = tasks.get(index);
+                    tasks.remove(index);
+
                     printUnderline();
                     printIndent("Noted. I've removed this task:");
-                    printIndent("   " + tasks.get(index).toString());
-                    tasks.remove(index);
+                    printIndent("   " + removed.toString());
                     printIndent("Now you have " + tasks.size() + (tasks.size() == 1 ? " task " : " tasks ") + "in the list.");
                     printUnderline();
                 } catch (IndexOutOfBoundsException e) {
                     printUnderline();
                     printIndent("The task number is invalid :((");
+                    printUnderline();
+                }
 
             // find
             } else if (words.get(0).equals("find")) {

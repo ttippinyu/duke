@@ -109,6 +109,32 @@ public class Duke {
                 } catch (IndexOutOfBoundsException e) {
                     printUnderline();
                     printIndent("The task number is invalid :((");
+
+            // find
+            } else if (words.get(0).equals("find")) {
+                try {
+                    if (words.size() < 2)
+                        throw new DukeException("Sorry, you need to add a keyword.");
+
+                    String keyword = String.join(" ", words.subList(1, words.size()));
+
+                    List<Task> found = new ArrayList<>();
+                    for (Task task : tasks)
+                        if (task.containsKeyword(keyword))
+                            found.add(task);
+
+                    int counter = 1;
+                    printUnderline();
+                    printIndent("HHere are the matching tasks in your list:");
+                    for (Task x : found) {
+                        printIndent(counter + ". " + x);
+                        counter++;
+                    }
+                    printUnderline();
+
+                } catch (DukeException e) {
+                    printUnderline();
+                    printIndent(e.getMessage());
                     printUnderline();
                 }
 

@@ -96,6 +96,22 @@ public class Duke {
                     printUnderline();
                 }
 
+            // delete
+            } else if (words.get(0).equals("delete")) {
+                try {
+                    int index = Integer.parseInt(words.get(1)) - 1;
+                    printUnderline();
+                    printIndent("Noted. I've removed this task:");
+                    printIndent("   " + tasks.get(index).toString());
+                    tasks.remove(index);
+                    printIndent("Now you have " + tasks.size() + (tasks.size() == 1 ? " task " : " tasks ") + "in the list.");
+                    printUnderline();
+                } catch (IndexOutOfBoundsException e) {
+                    printUnderline();
+                    printIndent("The task number is invalid :((");
+                    printUnderline();
+                }
+
             // actions
             } else {
                 try {

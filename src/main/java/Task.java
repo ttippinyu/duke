@@ -20,4 +20,6 @@ public class Task implements Serializable {
     public String saveFormat() {
         return (this.isDone ? "1" : "0") + "|" + this.description;
     }
+
+    public boolean containsKeyword(String keyword) {return this.description.contains(keyword); }
 }

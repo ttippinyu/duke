@@ -9,6 +9,11 @@ public class DateTime {
     private int hour;
     private int min;
 
+    /**
+     * Converts the string format of datetime into the object DateTime
+     * @param input the string for the datetime in dd/mm/yy hh:mm
+     * @throws DukeException When the format of the input is wrong
+     */
     public DateTime (String input) throws DukeException {
         List<String> dateTimeSplit = Arrays.asList(input.split(" "));
 
@@ -35,6 +40,10 @@ public class DateTime {
         }
     }
 
+    /**
+     * Gives the string of the object
+     * @return dd/mm/yyyy hh:mm
+     */
     @Override
     public String toString() {
         return String.format("%02d/%02d/%04d %02d:%02d", this.day, this.month, this.year, this.hour, this.min);

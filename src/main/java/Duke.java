@@ -6,6 +6,10 @@ public class Duke {
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Creates a new Duke program
+     * @param filePath name of file to store
+     */
     public Duke(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -16,6 +20,9 @@ public class Duke {
         }
     }
 
+    /**
+     * Starts the Duke program
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;

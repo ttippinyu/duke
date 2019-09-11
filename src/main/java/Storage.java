@@ -6,10 +6,19 @@ import java.util.List;
 public class Storage {
     private String filename;
 
+    /**
+     * Create storage object
+     * @param filename the name of the file
+     */
     public Storage(String filename) {
         this.filename = filename;
     }
 
+    /**
+     * Load the file content
+     * @return a list of the tasks
+     * @throws DukeException if file opening has problems
+     */
     public List<Task> load() throws DukeException {
         try {
             BufferedReader inStream = new BufferedReader(new FileReader(this.filename));
@@ -44,6 +53,10 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves the list of tasks into the file
+     * @param tasks the list of tasks to be saved
+     */
     public void save(List<Task> tasks) {
         try {
             BufferedWriter outStream = new BufferedWriter(new FileWriter(this.filename));

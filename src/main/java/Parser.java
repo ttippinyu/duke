@@ -3,6 +3,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Parser {
+    /**
+     * Gives the type of command based on the string input
+     * @param fullCommand the string input
+     * @return the correct command object
+     * @throws DukeException when the command is not possible
+     */
     static public Command parse(String fullCommand) throws DukeException {
         List<String> words = Arrays.asList(fullCommand.split(" "));
 
